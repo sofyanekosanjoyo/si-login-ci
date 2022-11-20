@@ -10,10 +10,54 @@ class Auth extends CI_Controller
     }
     public function index()
     {
-        $data['judul'] = 'Halaman Login';
-        $this->load->view('templates/auth_header', $data);
-        $this->load->view('auth/login');
-        $this->load->view('templates/auth_header');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required');
+
+        if ($this->form_validation->run() == false) {
+            $data['judul'] = 'Halaman Login';
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/login');
+            $this->load->view('templates/auth_header');
+        } else {
+            // Pengecekan / validasi login
+            $this->_login(); // Method Private
+        }
+    }
+
+    private function _login()
+    {
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+
+        // Jika usernya ada, ditemukan
+        if ($user) {
+            // Jika usernya aktif
+            if ($user['status_aktifasi'] == 'Aktif') {
+                // Cek password
+                if (password_verify($password, $user['password'])) {
+                    $data = [
+                        'email' => $user['email'],
+                        'id_level' => $user['id_level']
+                    ];
+                    $this->session->set_userdata($data);
+                    redirect('user');
+                } else {
+                    // Jika password salah
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Password salah! </div>');
+                    redirect('auth');
+                }
+            } else {
+                // Jika usernya tidak aktif
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email belum diaktifasi! </div>');
+                redirect('auth');
+            }
+        } else {
+            // Jika usernya tidak ditemukan
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email belum terdaftar! </div>');
+            redirect('auth');
+        }
     }
 
     public function registrasi()
@@ -40,7 +84,7 @@ class Auth extends CI_Controller
                 'foto' => 'default.jpg',
                 'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
                 'id_level' => 2,
-                'status_aktifasi' => 1,
+                'status_aktifasi' => 'Aktif',
                 'tanggal_dibuat' => time()
             ];
 
@@ -48,5 +92,14 @@ class Auth extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat! Akun kamu sudah dibuat. Silahkan login. </div>');
             redirect('auth');
         }
+    }
+
+    public function logout()
+    {
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('id_level');
+
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Kamu sudah keluar! </div>');
+        redirect('auth');
     }
 }
