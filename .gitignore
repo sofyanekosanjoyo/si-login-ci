@@ -32,7 +32,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 
 #codeigniter 3
-application/logs/*
-!application/logs/index.html
-!application/logs/.htaccess
-/vendor/
+# application/logs/*
+# !application/logs/index.html
+# !application/logs/.htaccess
+# /vendor/

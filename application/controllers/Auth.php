@@ -41,8 +41,14 @@ class Auth extends CI_Controller
                         'email' => $user['email'],
                         'id_level' => $user['id_level']
                     ];
+
                     $this->session->set_userdata($data);
-                    redirect('user');
+
+                    if ($user['id_level'] == 1) {
+                        redirect('admin');
+                    } else {
+                        redirect('user');
+                    }
                 } else {
                     // Jika password salah
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Password salah! </div>');
