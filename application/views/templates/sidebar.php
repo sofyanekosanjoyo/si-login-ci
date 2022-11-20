@@ -13,40 +13,54 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Administrator
-    </div>
+    <!-- Query Menu dari Database -->
+    <?php
+    $id_level = $this->session->userdata('id_level');
+    $queryMenu = "SELECT `user_menu`.`id`, `menu`
+                    FROM `user_menu` JOIN `user_access_menu`
+                      ON `user_menu`.`id` = `user_access_menu`.`id_menu`
+                   WHERE `user_access_menu`.`id_level` = $id_level
+                ORDER BY `user_access_menu`.`id_menu` ASC
+                ";
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
+    $menu = $this->db->query($queryMenu)->result_array();
+    ?>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+    <!-- LOOPING MENU -->
+    <?php foreach ($menu as $m) : ?>
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            <?= $m['menu']; ?>
+        </div>
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        User
-    </div>
+        <?php
+        $idMenu = $m['id'];
+        $querySubMenu = " SELECT * FROM `user_sub_menu`
+                           WHERE `id_menu` = $idMenu
+                           AND `status_aktifasi` = 'Aktif'
+                        ";
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fa fa-user fa-fw"></i>
-            <span>Profil</span></a>
-    </li>
+        $subMenu = $this->db->query($querySubMenu)->result_array();
+        ?>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+        <?php foreach ($subMenu as $sm) : ?>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url($sm['url']); ?>">
+                    <i class="<?= base_url($sm['icon']); ?>"></i>
+                    <span><?= $sm['judul']; ?></span></a>
+            </li>
+        <?php endforeach; ?>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+    <?php endforeach; ?>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
-            <i class="fas fa-sign-out-alt fa-fw"></i>
+            <i class="fas fa-fw fa-sign-out-alt "></i>
             <span>Keluar</span></a>
     </li>
 
