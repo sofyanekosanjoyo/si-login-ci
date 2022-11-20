@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2022 at 12:22 PM
+-- Generation Time: Nov 20, 2022 at 06:54 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -65,6 +65,76 @@ INSERT INTO `user` (`id`, `nama`, `email`, `foto`, `password`, `id_level`, `stat
 (5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'default.jpg', '$2y$10$f1I8Rs3u4j4RPlMhkAilkOtDm0OKmkOZptOEKaCfFZ1BaF2d/9SBa', 1, 'Aktif', 1668931180),
 (6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'default.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_access_menu`
+--
+
+CREATE TABLE `user_access_menu` (
+  `id` int(11) NOT NULL,
+  `id_level` int(11) NOT NULL,
+  `id_menu` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_access_menu`
+--
+
+INSERT INTO `user_access_menu` (`id`, `id_level`, `id_menu`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 2),
+(4, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_menu`
+--
+
+CREATE TABLE `user_menu` (
+  `id` int(11) NOT NULL,
+  `menu` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_menu`
+--
+
+INSERT INTO `user_menu` (`id`, `menu`) VALUES
+(1, 'Admin'),
+(2, 'User'),
+(3, 'Menu'),
+(4, 'Tes');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_submenu`
+--
+
+CREATE TABLE `user_submenu` (
+  `id` int(11) NOT NULL,
+  `id_menu` int(11) NOT NULL,
+  `judul` varchar(128) NOT NULL,
+  `url` varchar(128) NOT NULL,
+  `icon` varchar(128) NOT NULL,
+  `status_aktifasi` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_submenu`
+--
+
+INSERT INTO `user_submenu` (`id`, `id_menu`, `judul`, `url`, `icon`, `status_aktifasi`) VALUES
+(1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 'Aktif'),
+(2, 2, 'Profil User', 'user', 'fas fa-fw fa-user', 'Aktif'),
+(3, 2, 'Edit Profil', 'user/edit', 'fas fa-fw fa-user-edit', 'Aktif'),
+(4, 3, 'Manajemen Menu', 'menu', 'fas fa-fw fa-folder', 'Aktif'),
+(5, 3, 'Manajemen Submenu', 'menu/submenu', 'fas fa-fw fa-folder-open', 'Aktif'),
+(6, 1, 'coba', 'coba/coba', 'fab fa-fw fa-youtube', 'Aktif');
+
 --
 -- Indexes for dumped tables
 --
@@ -82,6 +152,24 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_access_menu`
+--
+ALTER TABLE `user_access_menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user_submenu`
+--
+ALTER TABLE `user_submenu`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -95,6 +183,24 @@ ALTER TABLE `level_user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user_access_menu`
+--
+ALTER TABLE `user_access_menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_menu`
+--
+ALTER TABLE `user_menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_submenu`
+--
+ALTER TABLE `user_submenu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
