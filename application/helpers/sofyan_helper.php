@@ -2,7 +2,7 @@
 
 function cek_akses_menu()
 {
-    $fungsiCI = get_instance(); // Memanggil fungsi-fungsi CI karena tidak dibentuk kelas
+    $fungsiCI = get_instance(); // Memanggil fungsi-fungsi CI karena tidak dibentuk kelas (ini fungsi this)
     if (!$fungsiCI->session->userdata('email')) {
         redirect('auth');
     } else {
@@ -20,5 +20,21 @@ function cek_akses_menu()
         if ($userAkses->num_rows() < 1) {
             redirect('auth/blokir');
         }
+    }
+}
+
+function ceklis_akses($id_level, $id_menu)
+{
+    $fungsiCI = get_instance();
+
+    $fungsiCI->db->where([
+        'id_level' => $id_level,
+        'id_menu' => $id_menu
+    ]);
+
+    $hasil = $fungsiCI->db->get('user_access_menu');
+
+    if ($hasil->num_rows() > 0) {
+        return "checked='checked'";
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2022 at 06:54 PM
+-- Generation Time: Nov 22, 2022 at 11:16 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -63,7 +63,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `nama`, `email`, `foto`, `password`, `id_level`, `status_aktifasi`, `tanggal_dibuat`) VALUES
 (5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'default.jpg', '$2y$10$f1I8Rs3u4j4RPlMhkAilkOtDm0OKmkOZptOEKaCfFZ1BaF2d/9SBa', 1, 'Aktif', 1668931180),
-(6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'default.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230);
+(6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'lisna.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230);
 
 -- --------------------------------------------------------
 
@@ -83,9 +83,9 @@ CREATE TABLE `user_access_menu` (
 
 INSERT INTO `user_access_menu` (`id`, `id_level`, `id_menu`) VALUES
 (1, 1, 1),
-(2, 1, 2),
 (3, 2, 2),
-(4, 1, 3);
+(57, 1, 2),
+(58, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -105,8 +105,7 @@ CREATE TABLE `user_menu` (
 INSERT INTO `user_menu` (`id`, `menu`) VALUES
 (1, 'Admin'),
 (2, 'User'),
-(3, 'Menu'),
-(4, 'Tes');
+(3, 'Menu');
 
 -- --------------------------------------------------------
 
@@ -133,7 +132,7 @@ INSERT INTO `user_submenu` (`id`, `id_menu`, `judul`, `url`, `icon`, `status_akt
 (3, 2, 'Edit Profil', 'user/edit', 'fas fa-fw fa-user-edit', 'Aktif'),
 (4, 3, 'Manajemen Menu', 'menu', 'fas fa-fw fa-folder', 'Aktif'),
 (5, 3, 'Manajemen Submenu', 'menu/submenu', 'fas fa-fw fa-folder-open', 'Aktif'),
-(6, 1, 'coba', 'coba/coba', 'fab fa-fw fa-youtube', 'Aktif');
+(7, 1, 'Akses Menu', 'admin/akses_menu', 'fa fa-fw fa-users', 'Aktif');
 
 --
 -- Indexes for dumped tables
@@ -189,7 +188,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
@@ -201,7 +200,7 @@ ALTER TABLE `user_menu`
 -- AUTO_INCREMENT for table `user_submenu`
 --
 ALTER TABLE `user_submenu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
