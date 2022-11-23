@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2022 at 11:16 AM
+-- Generation Time: Nov 23, 2022 at 10:31 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -62,7 +62,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `foto`, `password`, `id_level`, `status_aktifasi`, `tanggal_dibuat`) VALUES
-(5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'default.jpg', '$2y$10$f1I8Rs3u4j4RPlMhkAilkOtDm0OKmkOZptOEKaCfFZ1BaF2d/9SBa', 1, 'Aktif', 1668931180),
+(5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'WIN_20221108_08_32_36_Pro.jpg', '$2y$10$eRKS/2tTKeDna.z4/eHTrezN.KVNCEHiJHmSIxlQEaiKazMdNBuQa', 1, 'Aktif', 1668931180),
 (6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'lisna.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230);
 
 -- --------------------------------------------------------
@@ -129,10 +129,11 @@ CREATE TABLE `user_submenu` (
 INSERT INTO `user_submenu` (`id`, `id_menu`, `judul`, `url`, `icon`, `status_aktifasi`) VALUES
 (1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 'Aktif'),
 (2, 2, 'Profil User', 'user', 'fas fa-fw fa-user', 'Aktif'),
-(3, 2, 'Edit Profil', 'user/edit', 'fas fa-fw fa-user-edit', 'Aktif'),
+(3, 2, 'Edit Profil', 'user/editprofil', 'fas fa-fw fa-user-edit', 'Aktif'),
 (4, 3, 'Manajemen Menu', 'menu', 'fas fa-fw fa-folder', 'Aktif'),
 (5, 3, 'Manajemen Submenu', 'menu/submenu', 'fas fa-fw fa-folder-open', 'Aktif'),
-(7, 1, 'Akses Menu', 'admin/akses_menu', 'fa fa-fw fa-users', 'Aktif');
+(7, 1, 'Akses Menu', 'admin/akses_menu', 'fa fa-fw fa-users', 'Aktif'),
+(8, 2, 'Ubah Password', 'user/ubahpassword', 'fas fa-fw fa-key', 'Aktif');
 
 --
 -- Indexes for dumped tables
@@ -200,7 +201,7 @@ ALTER TABLE `user_menu`
 -- AUTO_INCREMENT for table `user_submenu`
 --
 ALTER TABLE `user_submenu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
