@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 10:31 AM
+-- Generation Time: Nov 23, 2022 at 01:42 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -63,7 +63,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `nama`, `email`, `foto`, `password`, `id_level`, `status_aktifasi`, `tanggal_dibuat`) VALUES
 (5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'WIN_20221108_08_32_36_Pro.jpg', '$2y$10$eRKS/2tTKeDna.z4/eHTrezN.KVNCEHiJHmSIxlQEaiKazMdNBuQa', 1, 'Aktif', 1668931180),
-(6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'lisna.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230);
+(6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'lisna.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230),
+(7, 'Yurike Mitha Sari', 'mitha@gmail.com', 'default.jpg', '$2y$10$fsgkjUuCB/r3jbQAS.iz6OXlUXKk5zQ8zj.93gQOwxMPA8C4CP/z6', 2, 'Tidak Aktif', 1669196840),
+(12, 'Gmail Sofyan', 'sofyanekosanjoyo@gmail.com', 'default.jpg', '$2y$10$c3yM8uPSqzjFdmDSD9T/5O10am6pXo1o9iuy3vq0k12xVFWtcdrFK', 2, 'Aktif', 1669207136);
 
 -- --------------------------------------------------------
 
@@ -135,6 +137,26 @@ INSERT INTO `user_submenu` (`id`, `id_menu`, `judul`, `url`, `icon`, `status_akt
 (7, 1, 'Akses Menu', 'admin/akses_menu', 'fa fa-fw fa-users', 'Aktif'),
 (8, 2, 'Ubah Password', 'user/ubahpassword', 'fas fa-fw fa-key', 'Aktif');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_token`
+--
+
+CREATE TABLE `user_token` (
+  `id` int(11) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `token` varchar(128) NOT NULL,
+  `tanggal_dibuat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_token`
+--
+
+INSERT INTO `user_token` (`id`, `email`, `token`, `tanggal_dibuat`) VALUES
+(3, 'cpnsditjensdapupr2021@gmail.com', 'WWe/e2bmLusTTZKjSRcgPZABkH8uRpGumojkdxU0Iew=', 1669203607);
+
 --
 -- Indexes for dumped tables
 --
@@ -170,6 +192,12 @@ ALTER TABLE `user_submenu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_token`
+--
+ALTER TABLE `user_token`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -183,7 +211,7 @@ ALTER TABLE `level_user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
@@ -202,6 +230,12 @@ ALTER TABLE `user_menu`
 --
 ALTER TABLE `user_submenu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `user_token`
+--
+ALTER TABLE `user_token`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

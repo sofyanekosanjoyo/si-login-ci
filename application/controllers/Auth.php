@@ -75,6 +75,8 @@ class Auth extends CI_Controller
 
     public function registrasi()
     {
+        $email = $this->input->post('email', true);
+
         $this->load->library('form_validation');
 
         if ($this->session->userdata('email')) {
@@ -99,16 +101,97 @@ class Auth extends CI_Controller
         } else {
             $data = [
                 'nama' => htmlspecialchars($this->input->post('nama', true)),
-                'email' => htmlspecialchars($this->input->post('email', true)),
+                'email' => htmlspecialchars($email),
                 'foto' => 'default.jpg',
                 'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
                 'id_level' => 2,
-                'status_aktifasi' => 'Aktif',
+                'status_aktifasi' => 'Tidak Aktif',
+                'tanggal_dibuat' => time()
+            ];
+
+            // Siapkan token
+            $token = base64_encode(random_bytes(32));
+            $user_token = [
+                'email' =>  $email,
+                'token' => $token,
                 'tanggal_dibuat' => time()
             ];
 
             $this->db->insert('user', $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat! Akun kamu sudah dibuat. Silahkan login. </div>');
+            $this->db->insert('user_token', $user_token);
+
+            $this->_kirimEmail($token, 'verifikasi');
+
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat! Akun kamu sudah dibuat. Silahkan aktifasi akun lewat email kamu. </div>');
+            redirect('auth');
+        }
+    }
+
+    private function _kirimEmail($token, $type)
+    {
+        $konfigurasiEmail = [
+            'protocol'  =>  'smtp',
+            'smtp_host' =>  'ssl://smtp.googlemail.com',
+            'smtp_user' =>  'sofyanekosanjoyo@gmail.com',
+            'smtp_pass' =>  'ijicnxuamwastwos',
+            'smtp_port' =>  465,
+            'emailtype' =>  'html',
+            'charset'   =>  'utf-8',
+            'newline'   =>  "\r\n"
+        ];
+
+        $this->load->library('email', $konfigurasiEmail);
+        $this->email->initialize($konfigurasiEmail);
+        $this->email->from('sofyanekosanjoyo@gmail.com', 'Programmer Ditjen SDA');
+        $this->email->to($this->input->post('email'));
+
+
+        if ($type == 'verifikasi') {
+            $this->email->subject('Verifikasi Akun Sistem Login CI');
+            $this->email->set_mailtype('html');
+            $this->email->message('Klik link untuk memverifikasi akun : <a href="' . base_url() . 'auth/verifikasi?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Aktikan Akun!</a>');
+        }
+
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    public function verifikasi()
+    {
+        $email = $this->input->get('email');
+        $token = $this->input->get('token');
+
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+
+        if ($user) {
+            $user_token = $this->db->get_where('user_token', ['token' => $token])->row_array();
+
+            if ($user_token) {
+                if (time() - $user_token['tanggal_dibuat'] < (60 * 60 * 24)) {
+                    $this->db->set('status_aktifasi', 'Aktif');
+                    $this->db->where('email', $email);
+                    $this->db->update('user');
+
+                    $this->db->delete('user_token', ['email' => $email]);
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat ! Akun ' . $email . ' sudah diaktifasi. Silahkan login. </div>');
+                    redirect('auth');
+                } else {
+                    $this->db->delete('user', ['email' => $email]);
+                    $this->db->delete('user_token', ['email' => $email]);
+
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Token kadaluarsa! Gagal mengaktifkan akun!  </div>');
+                    redirect('auth');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Token salah! Gagal mengaktifkan akun! </div>');
+                redirect('auth');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email salah! Gagal mengaktifkan akun! </div>');
             redirect('auth');
         }
     }
