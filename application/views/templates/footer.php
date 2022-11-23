@@ -56,6 +56,11 @@
 <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
 
 <script>
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+
     $('.form-check-input').on('click', function() {
         const idMenu = $(this).data('menu');
         const idLevel = $(this).data('level');

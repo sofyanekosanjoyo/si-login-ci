@@ -4,8 +4,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Auth extends CI_Controller
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
+        $this->load->library('form_validation');
+
+        if ($this->session->userdata('email')) {
+            redirect('user');
+        }
+
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
@@ -64,6 +75,12 @@ class Auth extends CI_Controller
 
     public function registrasi()
     {
+        $this->load->library('form_validation');
+
+        if ($this->session->userdata('email')) {
+            redirect('user');
+        }
+
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
             'is_unique' => 'Email ini sudah didaftarkan!'
