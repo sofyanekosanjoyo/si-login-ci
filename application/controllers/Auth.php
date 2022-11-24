@@ -133,7 +133,7 @@ class Auth extends CI_Controller
             'protocol'  =>  'smtp',
             'smtp_host' =>  'ssl://smtp.googlemail.com',
             'smtp_user' =>  'sofyanekosanjoyo@gmail.com',
-            'smtp_pass' =>  'ijicnxuamwastwos',
+            'smtp_pass' =>  'vrjmhllytjilhzzi',
             'smtp_port' =>  465,
             'emailtype' =>  'html',
             'charset'   =>  'utf-8',
@@ -150,6 +150,10 @@ class Auth extends CI_Controller
             $this->email->subject('Verifikasi Akun Sistem Login CI');
             $this->email->set_mailtype('html');
             $this->email->message('Klik link untuk memverifikasi akun : <a href="' . base_url() . 'auth/verifikasi?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Aktikan Akun!</a>');
+        } else if ($type == 'lupa') {
+            $this->email->subject('Mengatur Ulang Password Sistem Login CI');
+            $this->email->set_mailtype('html');
+            $this->email->message('Klik link untuk mengatur ulang password : <a href="' . base_url() . 'auth/aturulangpassword?email=' . $this->input->post('email') . '&token=' . urlencode($token) . '">Atur Ulang Password!</a>');
         }
 
         if ($this->email->send()) {
@@ -171,7 +175,7 @@ class Auth extends CI_Controller
             $user_token = $this->db->get_where('user_token', ['token' => $token])->row_array();
 
             if ($user_token) {
-                if (time() - $user_token['tanggal_dibuat'] < (60 * 60 * 24)) {
+                if (time() - $user_token['tanggal_dibuat'] < (60 * 60)) {
                     $this->db->set('status_aktifasi', 'Aktif');
                     $this->db->where('email', $email);
                     $this->db->update('user');
@@ -210,5 +214,99 @@ class Auth extends CI_Controller
         $data['judul'] = 'Akses Diblokir';
         $this->load->view('auth/blokir', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function lupaPassword()
+    {
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+        if ($this->form_validation->run() == false) {
+            $data['judul'] = 'Lupa Password';
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/lupa-password');
+            $this->load->view('templates/auth_header');
+        } else {
+            $email = $this->input->post('email');
+            $hasil = $this->db->get_where('user', ['email' => $email, 'status_aktifasi' => 'Aktif'])->row_array();
+
+            if ($hasil) {
+                // Siapkan token
+                $token = base64_encode(random_bytes(32));
+                $user_token = [
+                    'email' =>  $email,
+                    'token' => $token,
+                    'tanggal_dibuat' => time()
+                ];
+
+                $this->db->insert('user_token', $user_token);
+                $this->_kirimEmail($token, 'lupa');
+
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Mohon periksa email kamu untuk mengatur ulang password! </div>');
+                redirect('auth/lupapassword');
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email belum terdaftar atau belum aktif! </div>');
+                redirect('auth/lupapassword');
+            }
+        }
+    }
+
+    public function aturUlangPassword()
+    {
+        $email = $this->input->get('email');
+        $token = $this->input->get('token');
+
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+
+        if ($user) {
+            $user_token = $this->db->get_where('user_token', ['token' => $token])->row_array();
+            if ($user_token) {
+                if (time() - $user_token['tanggal_dibuat'] < (60 * 60)) {
+                    $this->db->set('status_aktifasi', 'Aktif');
+                    $this->db->where('email', $email);
+                    $this->db->update('user');
+
+                    $this->session->set_userdata('atur_ulang_password', $email);
+                    $this->ubahPassword();
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Token kadaluarsa! Gagal mengatur ulang password! </div>');
+                    redirect('auth');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Atur ulang password gagal! Token salah! </div>');
+                redirect('auth');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Atur ulang password gagal! Email salah! </div>');
+            redirect('auth');
+        }
+    }
+
+    public function ubahPassword()
+    {
+        if (!$this->session->userdata('atur_ulang_password')) {
+            redirect('auth');
+        }
+
+        $this->form_validation->set_rules('password1', 'Password', 'trim|required|min_length[3]|matches[password2]');
+        $this->form_validation->set_rules('password2', 'Ulangi Password', 'trim|required|min_length[3]|matches[password1]');
+
+        if ($this->form_validation->run() == false) {
+            $data['judul'] = 'Ubah Password';
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/ubah-password');
+            $this->load->view('templates/auth_header');
+        } else {
+            $password = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
+            $email = $this->session->userdata('atur_ulang_password');
+
+            $this->db->set('password', $password);
+            $this->db->where('email', $email);
+            $this->db->update('user');
+
+            $this->session->unset_userdata('atur_ulang_password');
+
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Password berhasil dirubah! Silahkan login! </div>');
+            redirect('auth');
+        }
     }
 }

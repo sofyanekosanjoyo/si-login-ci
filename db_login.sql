@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 01:42 PM
+-- Generation Time: Nov 24, 2022 at 03:49 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -62,10 +62,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `foto`, `password`, `id_level`, `status_aktifasi`, `tanggal_dibuat`) VALUES
-(5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'WIN_20221108_08_32_36_Pro.jpg', '$2y$10$eRKS/2tTKeDna.z4/eHTrezN.KVNCEHiJHmSIxlQEaiKazMdNBuQa', 1, 'Aktif', 1668931180),
+(5, 'Sofyan Eko Sanjoyo', 'sofyanekosanjoyo@pu.go.id', 'WIN_20221108_08_32_36_Pro.jpg', '$2y$10$5c3vqFFMK2BCNHXtuuV1KeUhW7HmGns0LybHcCfC3XzIuTN6VdhL.', 1, 'Aktif', 1668931180),
 (6, 'Lisna Agustina Paramitha', 'lisnaagustinaparamitha@gmail.com', 'lisna.jpg', '$2y$10$jrweTJFsAhrM8Y69MIVQ2.7LNeLUD.L7kWTKj4Dsr3GsFB.wU6Wb6', 2, 'Aktif', 1668932230),
 (7, 'Yurike Mitha Sari', 'mitha@gmail.com', 'default.jpg', '$2y$10$fsgkjUuCB/r3jbQAS.iz6OXlUXKk5zQ8zj.93gQOwxMPA8C4CP/z6', 2, 'Tidak Aktif', 1669196840),
-(12, 'Gmail Sofyan', 'sofyanekosanjoyo@gmail.com', 'default.jpg', '$2y$10$c3yM8uPSqzjFdmDSD9T/5O10am6pXo1o9iuy3vq0k12xVFWtcdrFK', 2, 'Aktif', 1669207136);
+(19, 'CPNS Ditjen SDA 2021', 'cpnsdditjensdapupr2021@gmail.com', 'default.jpg', '$2y$10$mXOncjlg4DsFhnM//O7xJOES9n/J9b.aYKEVP9bIpQG1KS3J9zfaq', 2, 'Tidak Aktif', 1669220153),
+(20, 'Sofyan Gmail Com', 'sofyanekosanjoyo@gmail.com', 'default.jpg', '$2y$10$aWQ72gI8aW4I65sS5ZTRvuG87aoARUuB/yAg4duKlJpUZqer0TQ0a', 2, 'Aktif', 1669253108);
 
 -- --------------------------------------------------------
 
@@ -155,7 +156,12 @@ CREATE TABLE `user_token` (
 --
 
 INSERT INTO `user_token` (`id`, `email`, `token`, `tanggal_dibuat`) VALUES
-(3, 'cpnsditjensdapupr2021@gmail.com', 'WWe/e2bmLusTTZKjSRcgPZABkH8uRpGumojkdxU0Iew=', 1669203607);
+(3, 'cpnsditjensdapupr2021@gmail.com', 'WWe/e2bmLusTTZKjSRcgPZABkH8uRpGumojkdxU0Iew=', 1669203607),
+(10, 'sofyanekosanjoyo@outlook.com', 'SbjSEd+9LdxjZklp2vO9O9+QrQ/MENLrEkERKqC3fIA=', 1669219467),
+(11, 'sofyanekosanjoyo@outlook.com', 'CAaFEgGuOzuhUgckslxENryrkXYZOlQgHXC5o30v+64=', 1669219557),
+(12, 'cpnsdditjensdapupr2021@gmail.com', 's9L9y5UisY/4TEn/yMoCm4fZsSNnwPSTnJLjVp7ILd8=', 1669220153),
+(19, 'sofyanekosanjoyo@pu.go.id', 'C5O/rWb7u0aPHDro8NBwQqWyKJ2R6dZSkJOWMvoOAAg=', 1669257389),
+(20, 'sofyanekosanjoyo@pu.go.id', 'mI8v/DnxbZ0gLDRhZcsRndjPEjGM3wqFdFlAoDzgi40=', 1669257963);
 
 --
 -- Indexes for dumped tables
@@ -211,7 +217,7 @@ ALTER TABLE `level_user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
@@ -235,7 +241,7 @@ ALTER TABLE `user_submenu`
 -- AUTO_INCREMENT for table `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
